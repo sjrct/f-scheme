@@ -1,0 +1,15 @@
+#
+# prgm/start/Makefile
+#
+
+-include ../../estab.mk
+include $(BLDD)/local.mk
+
+TARGET := f-scheme
+ENV    := prgm
+CSRCS  := interpreter.c value.c number.c env.c builtins.c
+LIBS   := cstd frosk
+LOCAL_CFLAGS := -Wno-unused-parameter
+
+include $(BLDD)/template.mk
+include $(BLDD)/rules.mk

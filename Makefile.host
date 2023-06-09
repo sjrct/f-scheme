@@ -1,0 +1,27 @@
+SHELL = /bin/bash
+CC = gcc
+
+CFLAGS = -g -Wall -Wextra -Wno-unused-parameter -O2
+LDFLAGS = -g -Wall -O2 -lreadline -lm
+
+TARGET = f-scheme
+NAMES = interpreter env value builtins number
+OBJS = $(foreach N,$(NAMES),build/$N.o)
+SRCS = $(foreach N,$(NAMES),src/$N.c)
+DEPS = $(foreach N,$(NAMES),build/$N.d)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^
+
+-include $(DEPS)
+
+build/%.o: src/%.c
+	@mkdir -p build
+	$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) -M -MP -MT $@ -MF $(subst .o,.d,$@) $<
+
+.PHONY: clean
+clean:
+	rm -rf $(TARGET) build
